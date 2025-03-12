@@ -11,10 +11,10 @@ resource "azurerm_network_security_group" "example" {
 }
 
 resource "azurerm_virtual_network" "app_network" {
-  name                = "app-network"
+  name                = local.virtual_network.name
   location            = azurerm_resource_group.appgrp.location
   resource_group_name = azurerm_resource_group.appgrp.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = local.virtual_network.address_prefixes
   # dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
   subnet {
