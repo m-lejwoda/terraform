@@ -17,22 +17,41 @@ resource "azurerm_virtual_network" "app_network" {
   address_space       = local.virtual_network.address_prefixes
   # dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
-  subnet {
-    name             = local.subnets[0].name
-    address_prefixes = [local.subnets[0].address_prefix]
-  }
+  # subnet {
+  #   name             = local.subnets[0].name
+  #   address_prefixes = [local.subnets[0].address_prefix]
+  # }
+  #
+  # subnet {
+  #   name             = local.subnets[1].name
+  #   address_prefixes = [local.subnets[1].address_prefix]
+  #   # security_group   = azurerm_network_security_group.example.id
+  # }
 
-  subnet {
-    name             = local.subnets[1].name
-    address_prefixes = [local.subnets[1].address_prefix]
-    # security_group   = azurerm_network_security_group.example.id
-  }
+
 
   # tags = {
   #   environment = "Production"
   # }
 }
 
+resource "azurerm_subnet" "websubnet01" {
+  name                 = local.subnets[0].name
+  resource_group_name  = azurerm_resource_group.appgrp.name
+  virtual_network_name = azurerm_virtual_network.app_network.name
+  address_prefixes     = [local.subnets[0].address_prefix]
+
+}
+
+
+resource "azurerm_subnet" "appsubnet01" {
+  name                 = local.subnets[1].name
+  resource_group_name  = azurerm_resource_group.appgrp.name
+  virtual_network_name = azurerm_virtual_network.app_network.name
+  address_prefixes     = [local.subnets[1].address_prefix]
+
+
+}
 # resource "azurerm_storage_account" "appstore09090894343" {
 #   name                     = "appstore09090894343"
 #   resource_group_name      = azurerm_resource_group.appgrp.name
