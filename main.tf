@@ -18,13 +18,13 @@ resource "azurerm_virtual_network" "app_network" {
   # dns_servers         = ["10.0.0.4", "10.0.0.5"]
 
   subnet {
-    name             = "websubnet01"
-    address_prefixes = [local.subnet_address_prefix[0]]
+    name             = local.subnets[0].name
+    address_prefixes = [local.subnets[0].address_prefix]
   }
 
   subnet {
-    name             = "appsubnet01"
-    address_prefixes = [local.subnet_address_prefix[1]]
+    name             = local.subnets[1].name
+    address_prefixes = [local.subnets[1].address_prefix]
     # security_group   = azurerm_network_security_group.example.id
   }
 
