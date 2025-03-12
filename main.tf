@@ -19,12 +19,12 @@ resource "azurerm_virtual_network" "app_network" {
 
   subnet {
     name             = "websubnet01"
-    address_prefixes = ["10.0.1.0/24"]
+    address_prefixes = [local.subnet_address_prefix[0]]
   }
 
   subnet {
     name             = "appsubnet01"
-    address_prefixes = ["10.0.2.0/24"]
+    address_prefixes = [local.subnet_address_prefix[1]]
     # security_group   = azurerm_network_security_group.example.id
   }
 
