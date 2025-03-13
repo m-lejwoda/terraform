@@ -62,12 +62,20 @@ resource "azurerm_network_interface" "webinterface01" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.websubnet01.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.webip01.id
   }
 }
 
-output "websubnet_01"{
-  value = azurerm_subnet.websubnet01.id
+resource "azurerm_public_ip" "webip01" {
+  allocation_method   = "Static"
+  location            = local.resource_location
+  name                = "webip01"
+  resource_group_name = azurerm_resource_group.appgrp.name
 }
+
+# output "websubnet_01"{
+#   value = azurerm_subnet.websubnet01.id
+# }
 # resource "azurerm_storage_account" "appstore09090894343" {
 #   name                     = "appstore09090894343"
 #   resource_group_name      = azurerm_resource_group.appgrp.name
