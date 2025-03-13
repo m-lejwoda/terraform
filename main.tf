@@ -64,6 +64,10 @@ resource "azurerm_network_interface" "webinterface01" {
     private_ip_address_allocation = "Dynamic"
   }
 }
+
+output "websubnet_01"{
+  value = azurerm_subnet.websubnet01.id
+}
 # resource "azurerm_storage_account" "appstore09090894343" {
 #   name                     = "appstore09090894343"
 #   resource_group_name      = azurerm_resource_group.appgrp.name
