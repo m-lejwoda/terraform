@@ -73,6 +73,24 @@ resource "azurerm_public_ip" "webip01" {
   resource_group_name = azurerm_resource_group.appgrp.name
 }
 
+resource "azurerm_network_security_group" "app_nsg" {
+  name                = "webip01"
+  location            = azurerm_resource_group.appgrp.name
+  resource_group_name = local.resource_location
+
+  security_rule {
+    name                       = "AllowRDP"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "3389"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
 # output "websubnet_01"{
 #   value = azurerm_subnet.websubnet01.id
 # }
