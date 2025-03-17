@@ -102,12 +102,13 @@ resource "azurerm_subnet_network_security_group_association" "appsubnet01_appnsg
 }
 
 resource "azurerm_windows_virtual_machine" "webvm01" {
-  name                = "webvm01"
+  name                = var.vm_name
   resource_group_name = azurerm_resource_group.appgrp.name
   location            = local.resource_location
   size                = "Standard_B2s"
   admin_username      = "appadmin"
   admin_password      = "P@$$w0rd1234!"
+  vm_agent_platform_updates_enabled = true
   network_interface_ids = [
     azurerm_network_interface.webinterface01.id,
   ]
