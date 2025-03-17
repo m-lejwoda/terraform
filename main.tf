@@ -106,7 +106,7 @@ resource "azurerm_windows_virtual_machine" "webvm01" {
   resource_group_name = azurerm_resource_group.appgrp.name
   location            = local.resource_location
   size                = "Standard_B2s"
-  admin_username      = "appadmin"
+  admin_username      = var.admin_username
   admin_password      = "P@$$w0rd1234!"
   vm_agent_platform_updates_enabled = true
   network_interface_ids = [
