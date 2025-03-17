@@ -74,9 +74,9 @@ resource "azurerm_public_ip" "webip01" {
 }
 
 resource "azurerm_network_security_group" "app_nsg" {
-  name                = "webip01"
-  location            = azurerm_resource_group.appgrp.name
-  resource_group_name = local.resource_location
+  name                = "app-nsg"
+  location            = local.resource_location
+  resource_group_name = azurerm_resource_group.appgrp.name
 
   security_rule {
     name                       = "AllowRDP"
@@ -88,6 +88,40 @@ resource "azurerm_network_security_group" "app_nsg" {
     destination_port_range     = "3389"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "websubnet01_appnsg" {
+  subnet_id                 = azurerm_subnet.websubnet01.id
+  network_security_group_id = azurerm_network_security_group.app_nsg.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "appsubnet01_appnsg" {
+  subnet_id                 = azurerm_subnet.appsubnet01.id
+  network_security_group_id = azurerm_network_security_group.app_nsg.id
+}
+
+resource "azurerm_windows_virtual_machine" "webvm01" {
+  name                = "webvm01"
+  resource_group_name = azurerm_resource_group.appgrp.name
+  location            = local.resource_location
+  size                = "Standard_B2s"
+  admin_username      = "appadmin"
+  admin_password      = "P@$$w0rd1234!"
+  network_interface_ids = [
+    azurerm_network_interface.webinterface01.id,
+  ]
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2022-Datacenter"
+    version   = "latest"
   }
 }
 
