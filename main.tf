@@ -105,9 +105,9 @@ resource "azurerm_windows_virtual_machine" "webvm01" {
   name                = var.vm_name
   resource_group_name = azurerm_resource_group.appgrp.name
   location            = local.resource_location
-  size                = "Standard_B2s"
+  size                = var.vm_size
   admin_username      = var.admin_username
-  admin_password      = "P@$$w0rd1234!"
+  admin_password      = var.admin_password
   vm_agent_platform_updates_enabled = true
   network_interface_ids = [
     azurerm_network_interface.webinterface01.id,
@@ -126,6 +126,21 @@ resource "azurerm_windows_virtual_machine" "webvm01" {
   }
 }
 
+resource "azurerm_managed_disk" "datadisk01" {
+  name                 = "datadisk01"
+  location             = local.resource_location
+  resource_group_name  = azurerm_resource_group.appgrp.name
+  storage_account_type = "Standard_LRS"
+  create_option        = "Empty"
+  disk_size_gb         = "4"
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "datadisk01_webvm01" {
+  managed_disk_id    = azurerm_managed_disk.datadisk01.id
+  virtual_machine_id = azurerm_windows_virtual_machine.webvm01.id
+  lun                = "0"
+  caching            = "ReadWrite"
+}
 # output "websubnet_01"{
 #   value = azurerm_subnet.websubnet01.id
 # }
