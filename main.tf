@@ -66,12 +66,26 @@ resource "azurerm_network_interface" "webinterface01" {
   }
 }
 
+resource "azurerm_network_interface" "webinterface02" {
+  name                = "webinterface02"
+  location            = local.resource_location
+  resource_group_name = azurerm_resource_group.appgrp.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.websubnet01.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+
 resource "azurerm_public_ip" "webip01" {
   allocation_method   = "Static"
   location            = local.resource_location
   name                = "webip01"
   resource_group_name = azurerm_resource_group.appgrp.name
 }
+
 
 resource "azurerm_network_security_group" "app_nsg" {
   name                = "app-nsg"
@@ -111,6 +125,7 @@ resource "azurerm_windows_virtual_machine" "webvm01" {
   vm_agent_platform_updates_enabled = true
   network_interface_ids = [
     azurerm_network_interface.webinterface01.id,
+    azurerm_network_interface.webinterface02.id
   ]
 
   os_disk {
@@ -141,28 +156,3 @@ resource "azurerm_virtual_machine_data_disk_attachment" "datadisk01_webvm01" {
   lun                = "0"
   caching            = "ReadWrite"
 }
-# output "websubnet_01"{
-#   value = azurerm_subnet.websubnet01.id
-# }
-# resource "azurerm_storage_account" "appstore09090894343" {
-#   name                     = "appstore09090894343"
-#   resource_group_name      = azurerm_resource_group.appgrp.name
-#   location                 = azurerm_resource_group.appgrp.location
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-#
-# }
-# resource "azurerm_storage_container" "scripts" {
-#   name                  = "scripts"
-#   storage_account_name  = azurerm_storage_account.appstore09090894343.name
-#
-# }
-#
-# resource "azurerm_storage_blob" "qaksk2s6vp8gszbc10202tjzt" {
-#   name                   = "qaksk2s6vp8gszbc10202tjzt.png"
-#   storage_account_name   = azurerm_storage_account.appstore09090894343.name
-#   storage_container_name = azurerm_storage_container.scripts.name
-#   type                   = "Block"
-#   source                 = "qaksk2s6vp8gszbc10202tjzt.png"
-# }
-#
