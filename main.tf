@@ -27,4 +27,4 @@ resource "azurerm_storage_account" "appstorageaccount123" {
 #   name                  = "scripts${count.index}"
 #   storage_account_id    = azurerm_storage_account.appstorageaccount1235.id
 #   container_access_type = "private"
-}
+# }
