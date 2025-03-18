@@ -18,3 +18,8 @@
 #   description = "This is the admin password for the virtual machine"
 #   sensitive = true
 # }
+
+variable "network_inteface_count" {
+  type=number
+  description = "This defines the number of network interfaces to create"
+}
