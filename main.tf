@@ -75,6 +75,7 @@ resource "azurerm_windows_virtual_machine" "webvm" {
   admin_username = "appadmin"
   admin_password = "Azure@123"
   vm_agent_platform_updates_enabled = true
+  availability_set_id = azurerm_availability_set.appset.id
   network_interface_ids = [
     azurerm_network_interface.assignment_inteface[count.index].id
   ]
@@ -90,6 +91,8 @@ resource "azurerm_windows_virtual_machine" "webvm" {
     version   = "latest"
   }
 }
+
+
 
 
 # output "container_name" {
