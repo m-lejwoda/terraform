@@ -10,10 +10,10 @@
 resource "azurerm_key_vault_secret" "vmpassword" {
   name         = "vmpassword"
   value        = var.adminpassword
-  key_vault_id = data.azurerm_key_vault.appvault49894378435344.id
+  key_vault_id = data.azurerm_key_vault.appvault498943784353442.id
 }
 
-data "azurerm_key_vault" "appvault49894378435344"{
-  name = "appvault49894378435344"
+data "azurerm_key_vault" "appvault498943784353442"{
+  name = "appvault498943784353442"
   resource_group_name = "security-grp"
 }
