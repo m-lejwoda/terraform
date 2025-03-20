@@ -10,3 +10,8 @@ variable "app_environment" {
       virtualmachinename=string
     }))
 }
+variable "adminpassword" {
+  type = string
+  description = "This is the admin password for the virtual machine"
+  sensitive = true
+}

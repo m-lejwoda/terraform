@@ -64,7 +64,7 @@ resource "azurerm_subnet_network_security_group_association" "subnet_appnsg" {
 }
 
 resource "azurerm_windows_virtual_machine" "webvm" {
-  admin_password = "Azure@123"
+  admin_password = azurerm_key_vault_secret.vmpassword.value
   admin_username = "appadmin"
   location       = local.resource_location
   name           = var.app_environment.production.virtualmachinename
