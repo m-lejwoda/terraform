@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "appgrp" {
 
 
 resource "azurerm_virtual_network" "app_network" {
-  address_space       = [var.app_environment.production.virtualnetworkcidrblock]
+  address_space = [var.app_environment.production.virtualnetworkcidrblock]
   location            = local.resource_location
   name                = var.app_environment.production.virtualnetworkname
   resource_group_name = azurerm_resource_group.appgrp.name
@@ -44,27 +44,19 @@ resource "azurerm_network_security_group" "app_nsg" {
   location            = local.resource_location
   resource_group_name = azurerm_resource_group.appgrp.name
 
-  security_rule {
-    name                       = "AllowRDP"
-    priority                   = 300
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "3389"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-  security_rule {
-    name                       = "AllowHTTP"
-    priority                   = 310
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
+  dynamic security_rule {
+    for_each = local.networksecuritygroup_rules
+    content {
+      name                       = "Allow-${security_rule.value.destination_port_range}"
+      priority                   = security_rule.value.priority
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = security_rule.value.destination_port_range
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
   }
 }
 
@@ -82,8 +74,8 @@ resource "azurerm_windows_virtual_machine" "webvm" {
   network_interface_ids = [
     azurerm_network_interface.webinterfaces.id
   ]
-  resource_group_name = azurerm_resource_group.appgrp.name
-  size                = "Standard_B2s"
+  resource_group_name               = azurerm_resource_group.appgrp.name
+  size                              = "Standard_B2s"
   vm_agent_platform_updates_enabled = true
   os_disk {
     caching              = "ReadWrite"
