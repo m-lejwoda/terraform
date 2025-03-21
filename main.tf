@@ -89,3 +89,11 @@ resource "azurerm_windows_virtual_machine" "webvm" {
   }
 
 }
+
+data "local_file" "cloudinit" {
+  filename = "cloudinit"
+}
+
+output "filecontents" {
+  value = data.local_file.cloudinit.content
+}
