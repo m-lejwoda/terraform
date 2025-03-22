@@ -17,15 +17,16 @@ app_environment = {
             publicipaddressname  = "webip01"
           }
         }
-        appsubnet01 = {
-          cidrblock = "10.0.1.0/24"
-          machines = {
-            appvm01 = {
-              networkinterfacename = "appinterface01"
-              publicipaddressname  = "appip01"
-            }
+      },
+      appsubnet01 = {
+        cidrblock = "10.0.1.0/24"
+        machines = {
+          appvm01 = {
+            networkinterfacename = "appinterface01"
+            publicipaddressname  = "appip01"
           }
         }
+
       }
     }
   }

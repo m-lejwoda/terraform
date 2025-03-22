@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "appinterfaces" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.app_network_subnets["appsubnet01"].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.appip[each.key].id
+    public_ip_address_id          = azurerm_public_ip.app_ip[each.key].id
   }
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_public_ip" "webip" {
   resource_group_name = azurerm_resource_group.appgrp.name
 }
 
-resource "azurerm_public_ip" "appip" {
+resource "azurerm_public_ip" "app_ip" {
   for_each = var.app_environment.production.subnets["appsubnet01"].machines
   allocation_method   = "Static"
   location            = local.resource_location
