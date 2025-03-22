@@ -1,6 +1,6 @@
 resource "null_resource" "addfiles" {
   provisioner "file" {
-    source = "Default.html"
+    source = "./Default.html"
     destination = "/home/linuxadmin/Default.html"
     connection {
       type="ssh"
@@ -17,7 +17,7 @@ resource "null_resource" "addfiles" {
       password = var.adminpassword
       host="${azurerm_public_ip.app_ip["appvm01"].ip_address}"
     }
-    inline = ["sudo mv /home/michal/PycharmProjects/Terraform/Default.html /var/www/html/Default.html"]
+    inline = ["sudo mv /home/linuxadmin/Default.html /var/www/html/Default.html"]
 
   }
   depends_on = [azurerm_network_security_group.app_nsg]
