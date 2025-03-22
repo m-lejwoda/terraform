@@ -4,10 +4,11 @@ variable "app_environment" {
       virtualnetworkcidrblock=string
       subnets=map(object({
         cidrblock=string
+        machines=map(object({
+          networkinterfacename=string
+          publicipaddressname=string
+          }))
       }))
-      networkinterfacename=string
-      publicipaddressname=string
-      virtualmachinename=string
     }))
 }
 variable "adminpassword" {

@@ -23,7 +23,7 @@ resource "azurerm_storage_blob" "IISConfig" {
 
 resource "azurerm_virtual_machine_extension" "vmextension" {
   name = "vmextension"
-  virtual_machine_id = azurerm_windows_virtual_machine.webvm.id
+  virtual_machine_id = azurerm_windows_virtual_machine.webvm["webvm01"].id
   publisher = "Microsoft.Compute"
   type = "CustomScriptExtension"
   type_handler_version = "1.10"

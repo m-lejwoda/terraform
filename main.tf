@@ -20,7 +20,8 @@ resource "azurerm_subnet" "app_network_subnets" {
 }
 
 resource "azurerm_network_interface" "webinterfaces" {
-  name                = var.app_environment.production.networkinterfacename
+  for_each = var.app_environment.production.subnets["websubnet01"].machines
+  name                = each.value.networkinterfacename
   location            = local.resource_location
   resource_group_name = azurerm_resource_group.appgrp.name
 
@@ -28,14 +29,15 @@ resource "azurerm_network_interface" "webinterfaces" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.app_network_subnets["websubnet01"].id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.webip.id
+    public_ip_address_id          = azurerm_public_ip.webip[each.key].id
   }
 }
 
 resource "azurerm_public_ip" "webip" {
+  for_each = var.app_environment.production.subnets["websubnet01"].machines
   allocation_method   = "Static"
   location            = local.resource_location
-  name                = var.app_environment.production.publicipaddressname
+  name                = each.value.publicipaddressname
   resource_group_name = azurerm_resource_group.appgrp.name
 }
 
@@ -67,12 +69,13 @@ resource "azurerm_subnet_network_security_group_association" "subnet_appnsg" {
 }
 
 resource "azurerm_windows_virtual_machine" "webvm" {
+  for_each = var.app_environment.production.subnets["websubnet01"].machines
   admin_password = azurerm_key_vault_secret.vmpassword.value
   admin_username = "appadmin"
   location       = local.resource_location
-  name           = var.app_environment.production.virtualmachinename
+  name           = each.key
   network_interface_ids = [
-    azurerm_network_interface.webinterfaces.id
+    azurerm_network_interface.webinterfaces[each.key].id
   ]
   resource_group_name               = azurerm_resource_group.appgrp.name
   size                              = "Standard_B2s"
