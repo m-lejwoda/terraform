@@ -11,3 +11,8 @@ webapp_environment = {
     }
   }
 }
+resource_tags ={
+  "tags" = {
+    department = "logisticks"
+    tier = "Tier2"
+  }}

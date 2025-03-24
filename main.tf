@@ -29,4 +29,5 @@ resource "azurerm_windows_web_app" "webapp" {
       dotnet_version = "v8.0"
     }
   }
+  tags = var.resource_tags.tags
 }

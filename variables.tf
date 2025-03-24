@@ -7,3 +7,10 @@ variable "webapp_environment" {
     serviceapp=map(string)
   }))
 }
+
+variable "resource_tags" {
+  type=map(object({
+    department=string
+    tier = string
+  }))
+}
