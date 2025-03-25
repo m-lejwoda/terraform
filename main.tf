@@ -31,3 +31,7 @@ resource "azurerm_windows_web_app" "webapp" {
   }
   tags = local.production_tags
 }
+
+resource "azurerm_web_app_active_slot" "activeslot" {
+  slot_id = azurerm_windows_web_app_slot.webapp_slot.id
+}
