@@ -14,3 +14,7 @@ variable "resource_tags" {
     tier = string
   }))
 }
+
+variable "webapp_slot" {
+  type = list(string)
+}
