@@ -24,3 +24,10 @@ resource "azurerm_mssql_database" "app_db" {
   sku_name     = each.value.sku
 
 }
+
+resource "azurerm_mssql_firewall_rule" "allowmyClient" {
+  name             = "AllowClientIp"
+  server_id        = azurerm_mssql_server.sqlserver["sqlserver400908099"].id
+  start_ip_address = "87.163.227.189"
+  end_ip_address   = "87.163.227.189"
+}
