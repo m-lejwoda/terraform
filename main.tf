@@ -3,37 +3,24 @@ resource "azurerm_resource_group" "appgrp" {
   location = local.resource_location
 }
 
-resource "azurerm_service_plan" "serviceplan" {
-  for_each            = var.webapp_environment.production.serviceplan
-  name                = each.key
-  resource_group_name = azurerm_resource_group.appgrp.name
-  location            = local.resource_location
-  os_type             = each.value.os_type
-  sku_name            = each.value.sku
+
+resource "azurerm_mssql_server" "sqlserver" {
+  for_each = var.dbapp_environment.production.server
+  name                         = each.key
+  resource_group_name          = azurerm_resource_group.appgrp.name
+  location                     = local.resource_location
+  version                      = "12.0"
+  administrator_login          = "sqladmin"
+  administrator_login_password = "Azure@3456"
 }
 
-resource "azurerm_windows_web_app" "webapp" {
-  for_each            = var.webapp_environment.production.serviceapp
-  name                = each.key
-  resource_group_name = azurerm_resource_group.appgrp.name
-  location            = local.resource_location
-  service_plan_id     = azurerm_service_plan.serviceplan[each.value].id
+resource "azurerm_mssql_database" "app_db" {
+  for_each = var.dbapp_environment.production.server
+  name         = each.value.dbname
+  server_id    = azurerm_mssql_server.sqlserver[each.key].id
+  collation    = "SQL_Latin1_General_CP1_CI_AS"
+  license_type = "LicenseIncluded"
+  max_size_gb  = 2
+  sku_name     = each.value.sku
 
-  site_config {
-    application_stack {
-      current_stack  = "dotnet"
-      dotnet_version = "v8.0"
-    }
-  }
-    logs{
-      detailed_error_messages = true
-      http_logs{
-        azure_blob_storage{
-          retention_in_days = 7
-          sas_url =  "https://${azurerm_storage_account.appstore43438978439923.name}.blob.core.windows.net/${azurerm_storage_container.weblogs.name}${data.azurerm_storage_account_blob_container_sas.accountsas.sas}"
-        }
-      }
-
-  }
-  tags = local.production_tags
 }

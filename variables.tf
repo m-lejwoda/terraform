@@ -1,20 +1,8 @@
-variable "webapp_environment" {
-  type= map(object({
-    serviceplan=map(object({
-        sku=string
-        os_type=string
+variable "dbapp_environment" {
+  type = map(object({
+    server=map(object({
+      dbname=string
+      sku=string
     }))
-    serviceapp=map(string)
   }))
-}
-
-variable "resource_tags" {
-  type=map(object({
-    department=string
-    tier = string
-  }))
-}
-
-variable "webapp_slot" {
-  type = list(string)
 }
