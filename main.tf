@@ -37,8 +37,10 @@ resource "azurerm_mssql_firewall_rule" "allowmyClient" {
   end_ip_address   = "87.163.227.189"
 }
 
-resource "null_resource" "database_setup" {
+resource "null_resource" "database_setup"{
   provisioner "local-exec" {
-    sqlcmd
+      command = "sqlcmd -S ${azurerm_mssql_server.sqlserver["${var.app_setup[0]}"].fully_qualified_domain_name} -U ${azurerm_mssql_server.sqlserver["${var.app_setup[0]}"].administrator_login} -P ${azurerm_mssql_server.sqlserver["${var.app_setup[0]}"].administrator_login_password} -d ${var.app_setup[1]} -i 01.sql"
+
   }
+  depends_on = [ azurerm_mssql_database.app_db ]
 }
