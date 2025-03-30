@@ -1,33 +1,21 @@
-dbapp_environment = {
+app_environment = {
   production={
-    server={
-      sqlserver400908099={
-        databases={
-          appdb={
-            sku="S0"
-            sampledb=null
-          }
-          adventureworksdb={
-            sku="S0"
-            sampledb="AdventureWorksLT"
+    virtualnetworkname="app-network"
+    virtualnetworkcidrblock="10.0.0.0/16"
+    subnets={
+      websubnet01={
+        cidrblock="10.0.0.0/24"
+        machines = null
+      }
+      dbsubnet01={
+        cidrblock="10.0.1.0/24"
+        machines={
+          dbvm01={
+            networkinterfacename="dbinterface01"
+            publicipaddressname="dbip01"
           }
         }
       }
-    }
-  }
-}
-app_setup = ["sqlserver400908099", "appdb"]
-
-webapp_environment = {
-  production={
-    serviceplan={
-      serviceplan2334238945={
-        sku="B1"
-        os_type="Windows"
-      }
-    }
-    serviceapp={
-      webapp55000400301="serviceplan2334238945"
     }
   }
 }
