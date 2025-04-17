@@ -41,3 +41,9 @@ variable "network_security_group_rules" {
   }))
   description = "This defines the network security group rules"
 }
+
+variable "virtual_machine_count" {
+  type = number
+  description = "This provides the number of virtual machines"
+}
+
