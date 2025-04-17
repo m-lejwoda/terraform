@@ -18,7 +18,7 @@ resource "null_resource" "addfiles" {
       password = "Azure@123"
       host=var.virtual_machine_public_ip_addresses[count.index]
     }
-    inline = ["sudo mv /home/michal/PycharmProjects/Terraform/Default.html /var/www/html/Default.html"]
+    inline = ["sudo mv /home/linuxadmin/Default.html /var/www/html/Default.html"]
 
   }
 }

@@ -1,7 +1,7 @@
 resource "azurerm_linux_virtual_machine" "appvm" {
   count = var.virtual_machine_count
   admin_password = "Azure@123"
-  admin_username = "appadmin"
+  admin_username = "linuxadmin"
   location       = var.location
   name           = "webvm0${count.index+1}"
   resource_group_name = var.resource_group_name

@@ -25,3 +25,12 @@ module "machines" {
   virtual_network_interface_ids = module.network.virtual_network_interfaces_ids
   virtual_machine_public_ip_addresses = module.network.public_ip_addresses
 }
+
+module "load-balancer"{
+  source = "./modules/networking/loadbalancer"
+  resource_group_name = var.resource_group_name
+  location = var.location
+  number_of_machines = var.virtual_machine_count
+  virtual_network_id = module.network.virtual_network_id
+  network_interface_private_ip_address = module.network.network_interface_private_ip_address
+}
