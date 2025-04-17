@@ -33,3 +33,11 @@ variable "public_ip_address_count" {
   description = "This defines the number of public ip addresses"
 
 }
+
+variable "network_security_group_rules" {
+  type=list(object({
+    priority = number
+    destination_port_range=string
+  }))
+  description = "This defines the network security group rules"
+}
