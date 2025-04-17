@@ -1,19 +1,18 @@
-resource "azurerm_resource_group" "appgrp"{
-  name="app-grp"
-  location = local.resource_location
+module "resource-group" {
+  source = "./modules/general/resourcegroup"
+  resource_group_name = var.resource_group_name
+  location = var.location
 }
 
-resource "azurerm_virtual_network" "app_network" {
-  name= var.app_environment.production.virtualnetworkname
-  location = local.resource_location
-  resource_group_name = azurerm_resource_group.appgrp.name
-  address_space = [var.app_environment.production.virtualnetworkcidrblock]
+module "network" {
+  source="./modules/networking/vnet"
+  resource_group_name = var.resource_group_name
+  location = var.location
+  vnet_name = var.vnet_name
+  vnet_address_prefix = var.vnet_address_prefix
+  vnet_subnet_count = var.vnet_subnet_count
+  public_ip_address_count = var.public_ip_address_count
+  network_interfaces_count = var.network_interfaces_count
+  depends_on = [module.resource-group]
 }
 
-resource "azurerm_subnet" "app_network_subnets" {
-  for_each = var.app_environment.production.subnets
-  name = each.key
-  resource_group_name = azurerm_resource_group.appgrp.name
-  virtual_network_name = azurerm_virtual_network.app_network.name
-  address_prefixes = [each.value.cidrblock]
-}
