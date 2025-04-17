@@ -17,3 +17,8 @@ variable "virtual_network_interface_ids" {
   type=list(string)
   description = "This will hold the virtual network interfaces ids"
 }
+
+variable "virtual_machine_public_ip_addresses" {
+  type=list(string)
+  description = "This will hold the virtual machine public ip addresses"
+}

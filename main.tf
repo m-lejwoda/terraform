@@ -23,4 +23,5 @@ module "machines" {
   location = var.location
   virtual_machine_count = var.virtual_machine_count
   virtual_network_interface_ids = module.network.virtual_network_interfaces_ids
+  virtual_machine_public_ip_addresses = module.network.public_ip_addresses
 }

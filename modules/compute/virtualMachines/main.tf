@@ -12,6 +12,10 @@ resource "azurerm_linux_virtual_machine" "appvm" {
     network_interface_ids = [
     var.virtual_network_interface_ids[count.index]
   ]
+
+  lifecycle {
+    ignore_changes = [identity]
+  }
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
