@@ -26,6 +26,14 @@ module "machines" {
   virtual_machine_public_ip_addresses = module.network.public_ip_addresses
 }
 
+module "virttualmachine-scale-set"{
+  source="./modules/compute/scalesets"
+  resource_group_name = var.resource_group_name
+  location = var.location
+  virtual_network_subnet_ids = module.network.virtual_network_subnet_id
+  virtual_machine_pool_id = module.load-balancer.backend_address_pool_id
+}
+
 module "load-balancer"{
   source = "./modules/networking/loadbalancer"
   resource_group_name = var.resource_group_name
