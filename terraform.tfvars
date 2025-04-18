@@ -1,26 +1,32 @@
-resource_group_name = "web-grp"
-resource_group_location="North Europe"
-webapp_environment={
-  "uksouthplan1000010"={
-        service_plan_os_type="Windows"
-        service_plan_sku="S1"
-        service_plan_location="UK South"
-        web_app_name="webapp8000009041"
-  },
-    "northeuropeplan1000010"={
-        service_plan_os_type="Windows"
-        service_plan_sku="S1"
-        service_plan_location="North Europe"
-        web_app_name="webapp9000009015"
+resource_group_name="app-grp"
+location = "North Europe"
+
+network_security_group_rules=[
+    {
+      priority=300
+      destination_port_range="22"
+    },
+    {
+      priority=310
+      destination_port_range="80"
+    }
+  ]
+
+  environment={
+  app={
+      virtual_network_name="app-network"
+      virtual_network_address_space="10.0.0.0/16"
+      subnet_count=1
+      network_interface_count=1
+      public_ip_address_count=1
+      virtual_machine_count=1
   }
-}
-traffic_manager_endpoints={
-  "primaryendpoint"={
-     priority=1,
-    weight=100
-  }
-  "secondaryendpoint"={
-    priority=2,
-    weight=100
+  test={
+      virtual_network_name="test-network"
+      virtual_network_address_space="10.1.0.0/16"
+      subnet_count=1
+      network_interface_count=1
+      public_ip_address_count=1
+      virtual_machine_count=1
   }
 }
