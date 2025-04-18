@@ -2,10 +2,6 @@ variable "resource_group_name" {
    type = string
 }
 
-variable "resource_group_location" {
-  type = string
-}
-
 variable "webapp_environment" {
      type = map(object({
         service_plan_os_type=string
