@@ -30,3 +30,14 @@ network_security_group_rules=[
       virtual_machine_count=1
   }
 }
+
+peering_virtual_networks={
+  app-network={
+      virtual_network_key="test"
+      destination_vnet_name="test-network"
+  }
+  test-network ={
+    virtual_network_key="app"
+    destination_vnet_name="app-network"
+  }
+}
