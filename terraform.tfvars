@@ -14,3 +14,13 @@ webapp_environment={
         web_app_name="webapp9000009015"
   }
 }
+traffic_manager_endpoints={
+  "primaryendpoint"={
+     priority=1,
+    weight=100
+  }
+  "secondaryendpoint"={
+    priority=2,
+    weight=100
+  }
+}
