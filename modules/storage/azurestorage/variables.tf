@@ -16,6 +16,7 @@ variable "container_names" {
   type = list(string)
 }
 
+
 variable "blobs" {
     type=map(object( 
     {
